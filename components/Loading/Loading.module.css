@@ -1,0 +1,13 @@
+/* .loading {
+  rotate: 1deg;
+} */
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 2s ease-in-out infinite;
+}

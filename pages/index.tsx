@@ -8,6 +8,7 @@ import { useState } from "react";
 import { usePrayerTimes } from "../hooks/usePrayerTimes";
 import { ArrowLeft } from "../components/ArrowLeft";
 import { ArrowRight } from "../components/ArrowRight";
+import { Loading } from "../components/Loading/Loading";
 
 const periods = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
@@ -41,8 +42,12 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
   });
 
   if (error) return <div className={styles.status}>Something went wrong.</div>;
-  if (isLoading || timings === null)
-    return <div className={styles.status}>Loading...</div>;
+  // if (isLoading || timings === null)
+  //   return (
+  //     <div className={styles.status}>
+  //       <Loading />
+  //     </div>
+  //   );
 
   return (
     <div className={styles.container}>
@@ -55,6 +60,7 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
       <main className={styles.mainContainer}>
         <div>
           <header>
+            <h1>Prayer times</h1>
             <div className={styles.headerContainer}>
               <button onClick={previousDay}>
                 <ArrowLeft />
@@ -69,7 +75,9 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
             </p>
           </header>
           {isLoading ? (
-            <div className={styles.status}>Loading...</div>
+            <div className={styles.status}>
+              <Loading />
+            </div>
           ) : (
             <div className={styles.times}>
               {periods.map((period, i) => (
