@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useSWR from "swr";
+import { API_ROUTE } from "../constants";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -20,7 +21,7 @@ export function usePrayerTimes({ date, city, country }: usePrayerTimesProps) {
   const year = date.getFullYear();
 
   const { data, error } = useSWR(
-    `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=${country}&month=${month}&year=${year}&method=8&iso8601=true`,
+    `${API_ROUTE}/calendarByCity?city=${city}&country=${country}&month=${month}&year=${year}&method=8&iso8601=true`,
     fetcher
   );
   const isLoading = !error && !data;

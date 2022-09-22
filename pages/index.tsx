@@ -100,14 +100,15 @@ export async function getServerSideProps({ req }: GetServerSideProps) {
       ? forwarded.split(/, /)[0]
       : req.socket.remoteAddress;
 
-  console.log(ip);
+  let res;
+  console.log(process.env.IP);
 
-  const res = await lookup(ip);
+  res = await lookup(ip);
 
   return {
     props: {
-      country: res?.country ?? null,
-      city: res?.city ?? null,
+      country: res?.country ?? "SA",
+      city: res?.city ?? "Makkah",
     },
   };
 }
