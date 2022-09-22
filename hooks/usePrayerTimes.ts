@@ -1,9 +1,12 @@
 import { useState } from "react";
 import useSWR from "swr";
 
-const fetcher = (...args: unknown[]) =>
-  // @ts-ignore
-  fetch(...args).then((res) => res.json());
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+
+  if (!response.ok) throw new Error("Something went wrong");
+  return response.json();
+};
 
 interface usePrayerTimesProps {
   date: Date;

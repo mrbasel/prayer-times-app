@@ -2,7 +2,6 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { PrayerTime } from "../components/PrayerTime";
 import styles from "../styles/Home.module.css";
-import useSWR from "swr";
 
 import { lookup } from "fast-geoip";
 import { useState } from "react";
@@ -103,7 +102,7 @@ export async function getServerSideProps({ req }: GetServerSideProps) {
 
   console.log(ip);
 
-  const res = await lookup("192.168.100.78");
+  const res = await lookup(ip);
 
   return {
     props: {
