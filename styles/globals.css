@@ -1,3 +1,10 @@
+:root {
+  --bg-color: #f7f7f7;
+  --primary-color: #fff;
+  --secondary-color: #b5b4b4ac;
+  --text-color: #111111;
+}
+
 html,
 body,
 #__next {
@@ -6,6 +13,11 @@ body,
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
 }
 
 a {
@@ -23,7 +35,8 @@ a {
     color-scheme: dark;
   }
   body {
-    color: rgb(250, 250, 250);
-    background: #111111;
+    --bg-color: #111111;
+    --text-color: rgb(250, 250, 250);
+    --primary-color: #343434;
   }
 }

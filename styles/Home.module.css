@@ -21,7 +21,7 @@
 }
 
 .mainContainer header {
-  background-color: #343434;
+  background-color: var(--primary-color);
   border-radius: 5px;
   padding: 1rem;
 }
@@ -33,7 +33,7 @@
 
 .dateControl {
   margin: 1rem 0;
-  background-color: #343434;
+  background-color: var(--primary-color);
   border-radius: 5px;
 }
 

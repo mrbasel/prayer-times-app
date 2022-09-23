@@ -1,5 +1,5 @@
 .prayerTimeCard {
-  background-color: #343434;
+  background-color: var(--primary-color);
   padding: .25rem .5rem;
   margin: .75rem 0 ;
   border-radius: 5px;
@@ -16,10 +16,10 @@
 }
 
 .timeUntilAthan {
-  color: #b5b4b4ac;
+  color: var(--secondary-color);
 }
 
 .timeUntilAthan span {
-  color: white;
+  color: var(--text-color);
   font-weight: 600;
 }
