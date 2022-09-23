@@ -35,10 +35,9 @@
   margin: 1rem 0;
   background-color: #343434;
   border-radius: 5px;
-  /* padding: 1rem; */
 }
 
-.mainContainer svg {
+.innerContainer svg {
   width: max(90px, 20%);
 }
 
