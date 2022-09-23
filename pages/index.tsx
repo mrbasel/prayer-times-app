@@ -10,8 +10,9 @@ import { usePrayerTimes } from "../hooks/usePrayerTimes";
 import { ArrowLeft } from "../components/ArrowLeft";
 import { ArrowRight } from "../components/ArrowRight";
 import { Loading } from "../components/Loading/Loading";
-
-const periods = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
+import { PERIODS } from "../constants";
+import { MosqueIcon } from "../components/MosqueIcon";
+import { DateControl } from "../components/DateControl/DateControl";
 
 interface HomeProps {
   country: string;
@@ -28,23 +29,6 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
 
   const { lang, t } = useTranslation("index");
   const direction = lang === "ar" ? "rtl" : "ltr";
-
-  const nextDay = () => {
-    const date = new Date(currentDate);
-    date.setDate(date.getDate() + 1);
-    setCurrentDate(date);
-  };
-
-  const previousDay = () => {
-    const date = new Date(currentDate);
-    date.setDate(date.getDate() - 1);
-    setCurrentDate(date);
-  };
-
-  const currentDateString = currentDate.toLocaleString([lang], {
-    dateStyle: "long",
-  });
-
   const rg = new Intl.DisplayNames([lang], { type: "region" });
 
   if (error) return <div className={styles.status}>Something went wrong.</div>;
@@ -60,27 +44,29 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
       <main className={styles.mainContainer}>
         <div>
           <header>
-            <h1>{t("prayer-times")}</h1>
-            <div className={styles.headerContainer} dir="ltr">
-              <button onClick={previousDay}>
-                <ArrowLeft />
-              </button>
-              <h2 className={styles.currentDate}>{currentDateString}</h2>
-              <button onClick={nextDay}>
-                <ArrowRight />
-              </button>
+            <div className={styles.innerContainer}>
+              <div>
+                <h1>{t("prayer-times")}</h1>
+                <p className="current-location">
+                  {rg.of(country)}, {city}
+                </p>
+              </div>
+              <MosqueIcon />
             </div>
-            <p className="current-location">
-              {rg.of(country)}, {city}
-            </p>
           </header>
+          <div className={styles.dateControl}>
+            <DateControl
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+            />
+          </div>
           {isLoading ? (
             <div className={styles.status}>
               <Loading />
             </div>
           ) : (
             <div className={styles.times}>
-              {periods.map((period, i) => (
+              {PERIODS.map((period, i) => (
                 <PrayerTime
                   key={i}
                   periodName={period}

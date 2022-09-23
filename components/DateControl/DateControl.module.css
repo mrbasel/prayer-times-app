@@ -1,0 +1,23 @@
+.headerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  text-align: center;
+}
+
+.headerContainer * {
+  margin: .5rem 0;
+}
+
+.headerContainer svg {
+  margin: 0 1rem;
+}
+
+.headerContainer button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
