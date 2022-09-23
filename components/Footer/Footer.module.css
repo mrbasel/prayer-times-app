@@ -1,4 +1,12 @@
 .footer {
-  margin-top: 3rem;
+  margin: 3rem 0;
   text-align: center;
+}
+
+.footer div {
+  margin: 0.75rem 0;
+}
+
+.langContainer a {
+  margin: 0 0.5rem;
 }
