@@ -13,6 +13,7 @@ import { Loading } from "../components/Loading/Loading";
 import { PERIODS } from "../constants";
 import { MosqueIcon } from "../components/MosqueIcon";
 import { DateControl } from "../components/DateControl/DateControl";
+import { Footer } from "../components/Footer/Footer";
 
 interface HomeProps {
   country: string;
@@ -34,52 +35,53 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
   if (error) return <div className={styles.status}>Something went wrong.</div>;
 
   return (
-    <div className={styles.container} dir={direction} lang={lang}>
-      <Head>
-        <title>Prayer times</title>
-        <meta name="description" content="A simple prayer times website " />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <div className={styles.container} dir={direction} lang={lang}>
+        <Head>
+          <title>Prayer times</title>
+          <meta name="description" content="A simple prayer times website " />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className={styles.mainContainer}>
-        <div>
-          <header>
-            <div className={styles.innerContainer}>
-              <div>
-                <h1>{t("prayer-times")}</h1>
-                <p className="current-location">
-                  {rg.of(country)}, {city}
-                </p>
+        <main className={styles.mainContainer}>
+          <div>
+            <header>
+              <div className={styles.innerContainer}>
+                <div>
+                  <h1>{t("prayer-times")}</h1>
+                  <p className="current-location">
+                    {rg.of(country)}, {city}
+                  </p>
+                </div>
+                <MosqueIcon />
               </div>
-              <MosqueIcon />
+            </header>
+            <div className={styles.dateControl}>
+              <DateControl
+                currentDate={currentDate}
+                setCurrentDate={setCurrentDate}
+              />
             </div>
-          </header>
-          <div className={styles.dateControl}>
-            <DateControl
-              currentDate={currentDate}
-              setCurrentDate={setCurrentDate}
-            />
+            {isLoading ? (
+              <div className={styles.status}>
+                <Loading />
+              </div>
+            ) : (
+              <div className={styles.times}>
+                {PERIODS.map((period, i) => (
+                  <PrayerTime
+                    key={i}
+                    periodName={period}
+                    time={timings[period]}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-          {isLoading ? (
-            <div className={styles.status}>
-              <Loading />
-            </div>
-          ) : (
-            <div className={styles.times}>
-              {PERIODS.map((period, i) => (
-                <PrayerTime
-                  key={i}
-                  periodName={period}
-                  time={timings[period]}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </main>
-
-      <footer className={styles.footer}></footer>
-    </div>
+        </main>
+      </div>
+      <Footer />
+    </>
   );
 };
 
