@@ -7,13 +7,12 @@ import useTranslation from "next-translate/useTranslation";
 import { lookup } from "fast-geoip";
 import { useState } from "react";
 import { usePrayerTimes } from "../hooks/usePrayerTimes";
-import { ArrowLeft } from "../components/ArrowLeft";
-import { ArrowRight } from "../components/ArrowRight";
 import { Loading } from "../components/Loading/Loading";
 import { PERIODS } from "../constants";
 import { MosqueIcon } from "../components/MosqueIcon";
 import { DateControl } from "../components/DateControl/DateControl";
 import { Footer } from "../components/Footer/Footer";
+import { getClosestDate } from "../utils";
 
 interface HomeProps {
   country: string;
@@ -22,7 +21,7 @@ interface HomeProps {
 
 const Home: NextPage<HomeProps> = ({ country, city }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { timings, isLoading, error } = usePrayerTimes({
+  const { dateTimings, isLoading, error } = usePrayerTimes({
     date: currentDate,
     country,
     city,
@@ -31,6 +30,9 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
   const { lang, t } = useTranslation("index");
   const direction = lang === "ar" ? "rtl" : "ltr";
   const rg = new Intl.DisplayNames([lang], { type: "region" });
+
+  const allDates = Object.values(dateTimings);
+  const nextPrayer = getClosestDate(allDates);
 
   if (error) return <div className={styles.status}>Something went wrong.</div>;
 
@@ -72,7 +74,10 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
                   <PrayerTime
                     key={i}
                     periodName={period}
-                    time={timings[period]}
+                    date={dateTimings[period]}
+                    showTimeUntilPrayer={
+                      nextPrayer?.getTime() === dateTimings[period].getTime()
+                    }
                   />
                 ))}
               </div>

@@ -16,7 +16,7 @@ interface usePrayerTimesProps {
 }
 
 export function usePrayerTimes({ date, city, country }: usePrayerTimesProps) {
-  const day = date.getDay() + 1;
+  const day = date.getDate() ;
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
@@ -28,8 +28,16 @@ export function usePrayerTimes({ date, city, country }: usePrayerTimesProps) {
   const timings: Record<string, string> =
     data?.data?.[day - 1]?.timings ?? null;
 
+  const dateTimings = Object.entries(timings ?? {}).reduce((prev, curr) => {
+    const [period, iso8601String] = curr;
+    const date = new Date(iso8601String.split("(")[0].trim())
+
+    prev[period] = date;
+    return prev;
+  }, {} as Record<string, Date>);
+
   return {
-    timings,
+    dateTimings,
     isLoading,
     error,
   };
