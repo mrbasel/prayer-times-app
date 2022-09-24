@@ -1,12 +1,11 @@
 import styles from "./PrayerTime.module.css";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
-import { getTimeDifferenceString } from "../../utils";
+import { useTimeUntilAthan } from "../../hooks/useTimeUntilAthan";
 
 export interface PrayerTimeProps {
   periodName: string;
   date: Date;
-  showTimeUntilPrayer: boolean;
+  isNextPrayer: boolean;
 }
 
 const timeFormatOptions: Intl.DateTimeFormatOptions = {
@@ -16,35 +15,25 @@ const timeFormatOptions: Intl.DateTimeFormatOptions = {
 export const PrayerTime = ({
   periodName,
   date,
-  showTimeUntilPrayer,
+  isNextPrayer,
 }: PrayerTimeProps) => {
   const { t, lang } = useTranslation("index");
-  const [timeUntilAthanString, setTimeUntilAthanString] = useState("");
+  const timeUntilAthanString = useTimeUntilAthan({
+    date,
+    isEnabled: isNextPrayer,
+  });
 
   const isFuture = date.getTime() > new Date().getTime();
-
-  useEffect(() => {
-    setTimeUntilAthanString(getTimeDifferenceString(date, new Date()));
-
-    let id: NodeJS.Timer | undefined;
-    if (showTimeUntilPrayer)
-      id = setInterval(() => {
-        setTimeUntilAthanString(getTimeDifferenceString(date, new Date()));
-      }, 1000);
-
-    return () => {
-      clearInterval(id);
-    };
-  }, [date, showTimeUntilPrayer]);
-
+  const showTimeUntilAthan = isNextPrayer && isFuture;
   const formatedTime = date.toLocaleTimeString([lang], timeFormatOptions);
+
   return (
     <div className={styles.prayerTimeCard}>
       <div>
         <p>{t(periodName.toLocaleLowerCase())}</p>
         <p>{formatedTime}</p>
       </div>
-      {showTimeUntilPrayer && isFuture && (
+      {showTimeUntilAthan && (
         <p className={styles.timeUntilAthan}>
           {t("time-until-athan")}:{" "}
           <span className={styles.time}>{timeUntilAthanString}</span>

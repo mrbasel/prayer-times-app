@@ -2,8 +2,6 @@
 export function getClosestDate(dates: Date[]) {
   const currentDate = new Date();
   for (const date of dates) {
-    console.log(date, currentDate);
-
     if (getIsSameDay(date, currentDate) && date > currentDate) return date;
   }
   return null;
@@ -24,6 +22,6 @@ export function getTimeDifferenceString(date1: Date, date2: Date) {
 
   const differenceInSeconds =
     Math.abs(olderDate.getTime() - newerDate.getTime()) / 1000;
-  
+
   return new Date(differenceInSeconds * 1000).toISOString().substring(11, 19);
 }

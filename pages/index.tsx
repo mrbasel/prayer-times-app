@@ -29,10 +29,11 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
 
   const { lang, t } = useTranslation("index");
   const direction = lang === "ar" ? "rtl" : "ltr";
-  const rg = new Intl.DisplayNames([lang], { type: "region" });
+  const displayNames = new Intl.DisplayNames([lang], { type: "region" });
 
   const allDates = Object.values(dateTimings);
   const nextPrayer = getClosestDate(allDates);
+  const countryString = displayNames.of(country);
 
   if (error) return <div className={styles.status}>Something went wrong.</div>;
 
@@ -41,7 +42,7 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
       <div className={styles.container} dir={direction} lang={lang}>
         <Head>
           <title>Prayer times</title>
-          <meta name="description" content="A simple prayer times website " />
+          <meta name="description" content="Prayer times website" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -52,7 +53,7 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
                 <div>
                   <h1>{t("prayer-times")}</h1>
                   <p className="current-location">
-                    {rg.of(country)}, {city}
+                    {countryString}, {city}
                   </p>
                 </div>
                 <MosqueIcon />
@@ -75,7 +76,7 @@ const Home: NextPage<HomeProps> = ({ country, city }) => {
                     key={i}
                     periodName={period}
                     date={dateTimings[period]}
-                    showTimeUntilPrayer={
+                    isNextPrayer={
                       nextPrayer?.getTime() === dateTimings[period].getTime()
                     }
                   />
@@ -102,8 +103,6 @@ export async function getServerSideProps({ req }: GetServerSideProps) {
       : req.socket.remoteAddress;
 
   let res;
-  console.log(process.env.IP);
-
   res = await lookup(ip);
 
   return {
